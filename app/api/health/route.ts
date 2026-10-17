@@ -32,7 +32,7 @@ export async function GET() {
         ok: false,
         supabase: 'unreachable',
         latencyMs: 0,
-        error: 'Kunde inte kontrollera Supabase-anslutningen',
+        error: 'Could not check Supabase connection',
       },
       { headers }
     );

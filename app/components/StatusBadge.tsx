@@ -31,9 +31,9 @@ export default function StatusBadge() {
   }, []);
 
   const statusConfig = {
-    loading: { text: 'Kontrollerar...', color: 'bg-[#5c5852]' },
-    ok: { text: 'Allt funkar', color: 'bg-[#256f82]' },
-    down: { text: 'Ej tillgänglig', color: 'bg-[#8b4513]' },
+    loading: { text: 'Checking...', color: 'bg-[#5c5852]' },
+    ok: { text: 'Supabase reachable', color: 'bg-[#256f82]' },
+    down: { text: 'Supabase unreachable', color: 'bg-[#8b4513]' },
   };
 
   const config = statusConfig[status];

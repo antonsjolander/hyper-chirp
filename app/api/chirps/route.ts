@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
     if (error) {
       console.error('Supabase error:', error);
       return NextResponse.json(
-        { error: 'Kunde inte hämta chirps från databasen' },
+        { error: 'Could not fetch chirps from database' },
         { status: 500, headers }
       );
     }
@@ -86,7 +86,7 @@ export async function POST(request: NextRequest) {
       body = await request.json();
     } catch {
       return NextResponse.json(
-        { error: 'Ogiltig JSON i request body' },
+        { error: 'Invalid JSON in request body' },
         { status: 400, headers }
       );
     }
@@ -136,7 +136,7 @@ export async function POST(request: NextRequest) {
     if (error) {
       console.error('Supabase error:', error);
       return NextResponse.json(
-        { error: 'Kunde inte skapa chirp i databasen' },
+        { error: 'Could not create chirp in database' },
         { status: 500, headers }
       );
     }
@@ -145,8 +145,8 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error in POST /api/chirps:', error);
     const message = error instanceof Error && error.message.includes('Missing Supabase')
-      ? 'Supabase är inte konfigurerad. Sätt NEXT_PUBLIC_SUPABASE_URL och NEXT_PUBLIC_SUPABASE_ANON_KEY i .env.local'
-      : 'Ett oväntat fel uppstod';
+      ? 'Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local'
+      : 'An unexpected error occurred';
     
     return NextResponse.json(
       { error: message },

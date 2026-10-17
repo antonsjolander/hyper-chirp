@@ -23,7 +23,7 @@ export async function POST(
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!uuidRegex.test(id)) {
       return NextResponse.json(
-        { error: 'Ogiltigt post-id (måste vara ett UUID)' },
+        { error: 'Invalid post ID (must be a UUID)' },
         { status: 400, headers }
       );
     }
@@ -35,13 +35,13 @@ export async function POST(
     if (error) {
       if (error.message.includes('Post not found')) {
         return NextResponse.json(
-          { error: 'Chirp hittades inte' },
+          { error: 'Chirp not found' },
           { status: 404, headers }
         );
       }
       console.error('Supabase error:', error);
       return NextResponse.json(
-        { error: 'Kunde inte uppdatera likes' },
+        { error: 'Could not update likes' },
         { status: 500, headers }
       );
     }
@@ -50,8 +50,8 @@ export async function POST(
   } catch (error) {
     console.error('Error in POST /api/chirps/[id]/like:', error);
     const message = error instanceof Error && error.message.includes('Missing Supabase')
-      ? 'Supabase är inte konfigurerad. Sätt NEXT_PUBLIC_SUPABASE_URL och NEXT_PUBLIC_SUPABASE_ANON_KEY i .env.local'
-      : 'Ett oväntat fel uppstod';
+      ? 'Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local'
+      : 'An unexpected error occurred';
     
     return NextResponse.json(
       { error: message },

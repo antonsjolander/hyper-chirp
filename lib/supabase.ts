@@ -8,7 +8,7 @@ export type Post = {
   content: string;
   tag: string | null;
   likes: number;
-  sentiment: 'Positiv' | 'Negativ' | 'Neutral' | 'Kaotisk' | null;
+  sentiment: 'Positive' | 'Negative' | 'Neutral' | 'Chaotic' | null;
   is_anonymous: boolean;
 };
 

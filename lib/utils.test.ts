@@ -18,20 +18,20 @@ describe('validateContent', () => {
   it('should reject non-string content', () => {
     const result = validateContent(123);
     expect(result.valid).toBe(false);
-    expect(result.error).toBe('content måste vara en text');
+    expect(result.error).toBe('content must be a string');
   });
 
   it('should reject empty content', () => {
     const result = validateContent('   ');
     expect(result.valid).toBe(false);
-    expect(result.error).toBe('content får inte vara tom');
+    expect(result.error).toBe('content cannot be empty');
   });
 
   it('should reject content over 280 characters', () => {
     const longContent = 'a'.repeat(281);
     const result = validateContent(longContent);
     expect(result.valid).toBe(false);
-    expect(result.error).toContain('content får max vara 280 tecken');
+    expect(result.error).toContain('content can be at most 280 characters');
     expect(result.error).toContain('281');
   });
 
@@ -53,19 +53,19 @@ describe('validateAuthorName', () => {
   it('should reject non-string author name', () => {
     const result = validateAuthorName(null);
     expect(result.valid).toBe(false);
-    expect(result.error).toBe('author_name måste vara en text');
+    expect(result.error).toBe('author_name must be a string');
   });
 
   it('should reject empty author name', () => {
     const result = validateAuthorName('  ');
     expect(result.valid).toBe(false);
-    expect(result.error).toBe('author_name får inte vara tom');
+    expect(result.error).toBe('author_name cannot be empty');
   });
 });
 
 describe('validateSentiment', () => {
   it('should accept valid sentiments', () => {
-    const validSentiments = ['Positiv', 'Negativ', 'Neutral', 'Kaotisk'];
+    const validSentiments = ['Positive', 'Negative', 'Neutral', 'Chaotic'];
     validSentiments.forEach(sentiment => {
       const result = validateSentiment(sentiment);
       expect(result.valid).toBe(true);
@@ -81,13 +81,13 @@ describe('validateSentiment', () => {
   it('should reject invalid sentiment', () => {
     const result = validateSentiment('Happy');
     expect(result.valid).toBe(false);
-    expect(result.error).toContain('sentiment måste vara en av');
+    expect(result.error).toContain('sentiment must be one of');
   });
 
   it('should reject non-string sentiment', () => {
     const result = validateSentiment(123);
     expect(result.valid).toBe(false);
-    expect(result.error).toBe('sentiment måste vara en text');
+    expect(result.error).toBe('sentiment must be a string');
   });
 });
 
@@ -119,7 +119,7 @@ describe('validateLimit', () => {
   it('should reject non-numeric limit', () => {
     const result = validateLimit('abc');
     expect(result.valid).toBe(false);
-    expect(result.error).toBe('limit måste vara ett nummer');
+    expect(result.error).toBe('limit must be a number');
   });
 });
 

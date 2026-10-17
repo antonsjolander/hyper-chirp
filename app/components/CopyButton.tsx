@@ -19,9 +19,9 @@ export default function CopyButton({ text }: { text: string }) {
     <button
       onClick={handleCopy}
       className="px-3 py-1.5 text-[13px] bg-[#256f82] text-white rounded hover:bg-[#1e5a6b] transition-colors"
-      aria-label="Kopiera kod"
+      aria-label="Copy code"
     >
-      {copied ? 'Kopierad!' : 'Kopiera'}
+      {copied ? 'Copied!' : 'Copy'}
     </button>
   );
 }

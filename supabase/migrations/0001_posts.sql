@@ -7,7 +7,7 @@ CREATE TABLE posts (
   content text NOT NULL,
   tag text,
   likes int NOT NULL DEFAULT 0,
-  sentiment text CHECK (sentiment IN ('Positiv', 'Negativ', 'Neutral', 'Kaotisk')),
+  sentiment text CHECK (sentiment IN ('Positive', 'Negative', 'Neutral', 'Chaotic')),
   is_anonymous boolean NOT NULL DEFAULT false,
   CONSTRAINT content_length CHECK (char_length(trim(content)) > 0 AND char_length(content) <= 280)
 );

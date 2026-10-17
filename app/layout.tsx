@@ -3,7 +3,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Hyper Chirp API",
-  description: "En Twitter-liknande API för Hyper Island",
+  description: "A Twitter-like API for Hyper Island",
 };
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="sv">
+    <html lang="en">
       <body>{children}</body>
     </html>
   );
