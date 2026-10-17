@@ -1,124 +1,125 @@
 # Hyper Chirp API
 
-Ett Twitter-liknande REST API byggt med Next.js och Supabase för Hyper Island-studenter att använda i sina klassprojekt.
+A Twitter-like REST API built with Next.js and Supabase for Hyper Island students to use in their class projects.
 
-## Funktioner
+## Features
 
-- 📝 Skapa chirps (max 280 tecken)
-- ❤️ Gilla chirps (atomisk räknare)
-- 🔍 Sök och filtrera efter tag
-- 😊 Sentiment-tagging (Positiv, Negativ, Neutral, Kaotisk)
-- 🎭 Anonyma chirps med roliga alias
-- 🌐 CORS-aktiverat för att anropas från alla frontends
-- 🏥 Health check-endpoint
+- 📝 Create chirps (max 280 characters)
+- ❤️ Like chirps (atomic counter)
+- 🔍 Search and filter by tag
+- 😊 Sentiment tagging (Positive, Negative, Neutral, Chaotic)
+- 🎭 Anonymous chirps with funny aliases
+- 🌐 CORS-enabled for cross-origin requests
+- 🏥 Health check endpoint
 
 ## Tech Stack
 
 - **Framework:** Next.js 15 (App Router, TypeScript)
-- **Database:** Supabase (PostgreSQL med REST API)
+- **Database:** Supabase (PostgreSQL with REST API)
 - **Styling:** Tailwind CSS
 - **Deployment:** Vercel-ready
 
 ## Setup
 
-### 1. Skapa ett Supabase-projekt
+### 1. Create a Supabase project
 
-1. Gå till [supabase.com](https://supabase.com) och skapa ett nytt projekt
-2. Gå till SQL Editor i din Supabase-dashboard
-3. Kör SQL-koden från `supabase/migrations/0001_posts.sql`
-4. (Valfritt) Kör `supabase/migrations/seed.sql` för att få lite testdata
+1. Go to [supabase.com](https://supabase.com) and create a new project
+2. Go to SQL Editor in your Supabase dashboard
+3. Run the SQL from `supabase/migrations/0001_posts.sql`
+4. Run the SQL from `supabase/migrations/0002_increment_likes_invoker.sql`
+5. (Optional) Run `supabase/migrations/seed.sql` for test data
 
-### 2. Konfigurera miljövariabler
+### 2. Configure environment variables
 
-Skapa `.env.local` i projektets rot:
+Create `.env.local` in the project root:
 
-\`\`\`bash
+```bash
 NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
-\`\`\`
+```
 
-Du hittar dessa värden i Supabase Dashboard under Settings → API.
+You can find these values in your Supabase Dashboard under Settings → API.
 
-### 3. Installera och kör
+### 3. Install and run
 
-\`\`\`bash
+```bash
 npm install
 npm run dev
-\`\`\`
+```
 
-Öppna [http://localhost:3000](http://localhost:3000) för att se API-dokumentationen.
+Open [http://localhost:3000](http://localhost:3000) to see the API documentation.
 
 ## API Endpoints
 
 ### GET /api/chirps
 
-Hämta chirps, sorterade efter nyast först.
+Fetch chirps, sorted by newest first.
 
 **Query parameters:**
-- `tag` - Filtrera på exakt tag
-- `limit` - Antal chirps (1-100, default 50)
-- `search` - Sök i innehållet (case-insensitive)
+- `tag` - Filter by exact tag
+- `limit` - Number of chirps (1-100, default 50)
+- `search` - Search in content (case-insensitive)
 
-**Exempel:**
-\`\`\`javascript
+**Example:**
+```javascript
 fetch('/api/chirps?tag=nextjs&limit=20')
   .then(res => res.json())
   .then(data => console.log(data));
-\`\`\`
+```
 
 ### POST /api/chirps
 
-Skapa en ny chirp.
+Create a new chirp.
 
 **Request body:**
-\`\`\`json
+```json
 {
   "author_name": "Anna Svensson",
-  "content": "Min första chirp!",
+  "content": "My first chirp!",
   "author_avatar": "https://example.com/avatar.jpg",
   "tag": "nextjs",
-  "sentiment": "Positiv",
+  "sentiment": "Positive",
   "is_anonymous": false
 }
-\`\`\`
+```
 
-**Obligatoriska fält:**
-- `author_name` (string, icke-tom)
-- `content` (string, 1-280 tecken)
+**Required fields:**
+- `author_name` (string, non-empty)
+- `content` (string, 1-280 characters)
 
-**Valfria fält:**
+**Optional fields:**
 - `author_avatar` (string)
 - `tag` (string)
-- `sentiment` ("Positiv" | "Negativ" | "Neutral" | "Kaotisk")
-- `is_anonymous` (boolean) - Om true, ersätts author_name med ett roligt alias
+- `sentiment` ("Positive" | "Negative" | "Neutral" | "Chaotic")
+- `is_anonymous` (boolean) - If true, replaces author_name with a funny alias
 
 ### POST /api/chirps/[id]/like
 
-Gilla en chirp (atomisk +1).
+Like a chirp (atomic +1).
 
-**Exempel:**
-\`\`\`javascript
+**Example:**
+```javascript
 fetch('/api/chirps/123e4567-e89b-12d3-a456-426614174000/like', {
   method: 'POST'
 }).then(res => res.json());
-\`\`\`
+```
 
 ### GET /api/health
 
-Kontrollera om API:t och Supabase är tillgängliga.
+Check if the API and Supabase are available.
 
-**Svar:**
-\`\`\`json
+**Response:**
+```json
 {
   "ok": true,
   "supabase": "reachable",
   "latencyMs": 45
 }
-\`\`\`
+```
 
 ## Database Schema
 
-\`\`\`sql
+```sql
 CREATE TABLE posts (
   id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
   created_at timestamptz NOT NULL DEFAULT now(),
@@ -127,62 +128,64 @@ CREATE TABLE posts (
   content text NOT NULL,
   tag text,
   likes int NOT NULL DEFAULT 0,
-  sentiment text CHECK (sentiment IN ('Positiv', 'Negativ', 'Neutral', 'Kaotisk')),
+  sentiment text CHECK (sentiment IN ('Positive', 'Negative', 'Neutral', 'Chaotic')),
   is_anonymous boolean NOT NULL DEFAULT false,
   CONSTRAINT content_length CHECK (char_length(trim(content)) > 0 AND char_length(content) <= 280)
 );
 
 CREATE INDEX idx_posts_created_at ON posts (created_at DESC);
 CREATE INDEX idx_posts_tag ON posts (tag) WHERE tag IS NOT NULL;
-\`\`\`
+```
 
-## Deploy till Vercel
+## Deploy to Vercel
 
-1. Pusha koden till GitHub
-2. Importera projektet i Vercel
-3. Lägg till environment variables:
+1. Push code to GitHub
+2. Import project in Vercel
+3. Add environment variables:
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 4. Deploy!
 
 ## Testing
 
-Kör tests:
-\`\`\`bash
+Run tests:
+```bash
 npm test
-\`\`\`
+```
 
-Kör linting:
-\`\`\`bash
+Run linting:
+```bash
 npm run lint
-\`\`\`
+```
 
-Bygg projektet:
-\`\`\`bash
+Build the project:
+```bash
 npm run build
-\`\`\`
+```
 
-## Felmeddelanden
+## Error Messages
 
-API:t returnerar vänliga felmeddelanden på svenska:
+The API returns friendly error messages in English:
 
-\`\`\`json
+```json
 {
-  "error": "content får max vara 280 tecken (du skickade 312)",
+  "error": "content can be at most 280 characters (you sent 312)",
   "field": "content"
 }
-\`\`\`
+```
 
-## Anonyma Alias
+## Anonymous Aliases
 
-När `is_anonymous: true` används, väljs ett slumpmässigt roligt alias från en lista:
-- Kaffebryggaren på plan 3
+When `is_anonymous: true` is used, a random funny alias is chosen from a list:
+- The Coffee Machine on Floor 3
 - VS Code
-- Den trasiga projektorn
-- Någon i Slack-kanalen
+- The Broken Projector
+- Someone in the Slack Channel
 - Stack Overflow
-- ...och många fler!
+- Merge Conflict
+- Undefined
+- ...and many more!
 
-## Licens
+## License
 
-Detta är ett utbildningsprojekt för Hyper Island. Använd fritt i dina klassprojekt!
+This is an educational project for Hyper Island. Feel free to use it in your class projects!
